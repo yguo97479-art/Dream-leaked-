@@ -1,0 +1,19 @@
+/* JENO chapter only: intentionally scoped to avoid changing other routes. */
+.kkt-page:has(.jeno-v48){padding:0;overflow:hidden;background:#b8c9d9}
+.jeno-v48{display:flex;flex-direction:column;height:100%;min-height:0;background:#b8c9d9}
+.jeno-v48-thread{flex:1;overflow-y:auto;min-height:0;padding:14px 12px 22px;overscroll-behavior:contain}
+.jeno-v48-day{width:max-content;max-width:95%;margin:8px auto 22px;border-radius:24px;padding:7px 13px;background:#9fb2c2;color:#566d7e;font-size:11px;text-align:center}
+.jeno-v48-message{display:flex;align-items:flex-start;gap:7px;margin:0 0 16px;font-size:13px}
+.jeno-v48-message.own{justify-content:flex-end;align-items:flex-end}
+.jeno-v48-message>small{align-self:flex-end;white-space:nowrap;color:#667989;font-size:10px;padding-bottom:3px}
+.jeno-v48-avatar{width:37px;height:37px;flex-shrink:0}
+.jeno-v48-avatar .jeno-v48-img{width:37px;height:37px;object-fit:cover;border-radius:13px}
+.jeno-v48-person{display:flex;flex-direction:column;gap:5px;max-width:73%;min-width:0}
+.jeno-v48-person>b{font-size:12px;color:#283946;font-weight:500}
+.jeno-v48-bubble{background:#fff;color:#20252b;border-radius:4px 14px 14px 14px;padding:10px 12px;line-height:1.55;overflow-wrap:anywhere;white-space:pre-wrap}
+.jeno-v48-translation{display:block;margin-top:6px;padding-top:6px;border-top:1px solid #eee;color:#777;font-size:11px}
+.jeno-v48-message.own .jeno-v48-bubble{background:#fee500;border-radius:14px 4px 14px 14px;max-width:77%;color:#262626}
+.jeno-v48-compose{display:flex;align-items:center;gap:9px;padding:10px 12px;background:#fff;flex-shrink:0;border-top:1px solid #e5e5e5}
+.jeno-v48-compose input{flex:1;min-width:0;border:1px solid #e6e6e6;border-radius:18px;padding:10px 12px;background:#fff;font-size:13px;outline:0}
+.jeno-v48-compose button{width:35px;height:35px;display:grid;place-items:center;border:0;border-radius:50%;background:#fee500;color:#252525}
+.jeno-v48-compose button:disabled{opacity:.35}
