@@ -84,23 +84,35 @@ const intro=[
   {id:'j-intro-2',role:'jeno',text:'네 계정까지 올라왔더라.',translation:'连你的账号都被发上去了。',time:'18:54'},
   {id:'j-intro-3',role:'jeno',text:'지금 뭐 하고 있어?',translation:'你现在在干嘛？',time:'18:54'}
 ];
-export default function JenoChat({save,avatar,onSend,legacyBeats=[]}){
+export default function JenoChat({save,avatar,onSend,legacyBeats=[],onStoryChoice}){
   const [draft,setDraft]=useState('');
   const bottom=useRef(null);
   const chat=save.jenoChat||[];
+  const step=Math.min(save.boyStep||0,legacyBeats.length);
+  const stage=legacyBeats[step];
   const old=(save.boyAnswers||[]).flatMap((a,i)=>[
     {id:'old-u-'+i,role:'me',text:a.text,time:legacyBeats[a.step]?.time||''},
     {id:'old-r-'+i,role:'jeno',text:a.reply,time:legacyBeats[a.step]?.time||''}
   ]);
   const messages=[...(old.length?[{id:'old-header',role:'system',text:'之前的聊天记录'}]:[]),...old,...intro,...chat];
-  useEffect(()=>{bottom.current?.scrollIntoView({block:'end',behavior:'smooth'})},[chat.length]);
+  useEffect(()=>{bottom.current?.scrollIntoView({block:'end',behavior:'smooth'})},[chat.length,step]);
   function submit(e){e?.preventDefault();if(!draft.trim())return;onSend(draft);setDraft('')}
   return <div className="jeno-v48">
     <div className="jeno-v48-thread">
       <div className="jeno-v48-day">10月24日 星期六 · 私人聊天</div>
       {messages.map(m=>m.role==='system'?<div className="jeno-v48-day" key={m.id}>{m.text}</div>:m.role==='me'?<div className="jeno-v48-message own" key={m.id}><small>{m.time}</small><div className="jeno-v48-bubble">{m.text}</div></div>:<div className="jeno-v48-message" key={m.id}><div className="jeno-v48-avatar">{React.cloneElement(avatar,{className:(avatar.props.className||'')+' jeno-v48-img'})}</div><div className="jeno-v48-person"><b>JENO ♡</b><div className="jeno-v48-bubble">{m.text}{m.translation&&<span className="jeno-v48-translation">{m.translation}</span>}</div></div><small>{m.time}</small></div>)}
+      {stage&&<div className="jeno-v48-message" key={'story-prompt-'+step}>
+        <div className="jeno-v48-avatar">{React.cloneElement(avatar,{className:(avatar.props.className||'')+' jeno-v48-img'})}</div>
+        <div className="jeno-v48-person"><b>JENO ♡</b><div className="jeno-v48-bubble">{stage.msg}</div></div>
+        <small>{stage.time}</small>
+      </div>}
+      {!stage&&<div className="jeno-v48-day">第一章已完成。你仍然可以自由发送消息。</div>}
       <div ref={bottom}/>
     </div>
+    {stage&&onStoryChoice&&<div className="jeno-story-choices" style={{padding:'10px 14px',background:'#f7f7f7',borderTop:'1px solid #e9e9e9',maxHeight:'205px',overflowY:'auto',flexShrink:0}}>
+      <div style={{fontSize:'12px',color:'#777',marginBottom:'7px'}}>剧情选项 · {step+1}/{legacyBeats.length}（也可以在下方自由输入）</div>
+      {stage.choices.map((choice,index)=><button key={index} type="button" onClick={()=>onStoryChoice(index)} style={{display:'block',width:'100%',padding:'10px 12px',marginBottom:'7px',textAlign:'left',border:'1px solid #ddd',borderRadius:'12px',background:'#fff',color:'#2485d0',fontSize:'14px',cursor:'pointer'}}>{choice[0]}</button>)}
+    </div>}
     <form className="jeno-v48-compose" onSubmit={submit}>
       <Plus size={22} color="#777"/>
       <input aria-label="发送给 JENO 的消息" value={draft} onChange={e=>setDraft(e.target.value)} placeholder="发送消息…" maxLength={500}/>
